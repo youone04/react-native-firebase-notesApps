@@ -27,9 +27,9 @@ class Home extends Component {
                            Object.keys(this.props.quote).map((key) => {
                                 return(
                                 <View key={key}>
-                                  <Text >{this.props.quote[key].nama}</Text>
-                                  <Text >{this.props.quote[key].nomorHp}</Text>
-                                  <Text >{this.props.quote[key].alamat}</Text>
+                                  <Text >{this.props.quote[key].judul}</Text>
+                                  <Text >{this.props.quote[key].isi}</Text>
+                                  <Text >{this.props.quote[key].tanggal}</Text>
                                 </View>
                                 )
                             })
