@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     Button,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity
 
 
 } from "react-native";
@@ -35,6 +36,11 @@ class Home extends Component {
                         }
                     </View>
                 }
+                <View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('tambahData')}>
+                        <Text>TAMBAH</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
