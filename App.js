@@ -10,6 +10,7 @@ import store from './src/config/redux/store';
 import Home from './src/container/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import TambahData from './src/container/TambahNotes';
+import UpdateDataNotes from './src/container/UpdateDataNotes';
 const Stack = createStackNavigator();
 const App = () => {
   return (
@@ -24,6 +25,11 @@ const App = () => {
            <Stack.Screen 
               name="tambahData" 
               component={TambahData} 
+              options={{headerShown: true}}
+              />
+            <Stack.Screen 
+              name="updateData" 
+              component={UpdateDataNotes} 
               options={{headerShown: true}}
               />
         </Stack.Navigator>
