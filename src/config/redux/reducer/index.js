@@ -4,9 +4,10 @@ let initialState = {
     updateQuote: {},
     isLoading: false,
     error: null,
-    isLoadSend: true,
+    isLoadSend: null,
     isLoadUpdate: true,
-    cekHapusData: false
+    cekHapusData: false,
+    loadUpadte: null
 }
 
 export default quotes = (state = initialState, action) => {
@@ -45,6 +46,11 @@ export default quotes = (state = initialState, action) => {
             return{
                 ...state,
                 isLoadUpdate: action.value
+            }
+        case 'LOAD_NOTES_UPDATE':
+            return{
+                ...state,
+                loadUpadte: action.value
             }
         default:
             return state

@@ -3,77 +3,154 @@ import {
     View,
     Text,
     StyleSheet,
-    Button,
-    ActivityIndicator,
-    TouchableOpacity
-
-
+    TouchableOpacity,
+    ScrollView,
+    Dimensions,
+    Alert,
+    TextInput
 } from "react-native";
 import * as quoteActions from '../../config/redux/action'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import {faTrash , faEdit} from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
-
+import Loader from "../../components/Loader";
+import FIREBASE from '../../config/FIREBASE';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const {width ,  height} = Dimensions.get('screen');
 class Home extends Component {
-    componentDidMount(){
-       this.getDataNotesFirebase()
+    constructor(){
+        super();
+        this.state = {
+            notes1: [],
+            searchData: ''
+        }
     }
-    getDataNotesFirebase = () => {
-        this.props.getDataNotes()
+    // urutan proses
+    // componentWillUnmount 1
+    // render 2
+    // componentDidMount 3
+     componentDidMount(){
+        this.getDataRencana()
+
     }
-    deleteNotes = async (id) => {
-        await this.props.deleteDataNotes(id)
+   
+    getDataRencana = async () => {
+        const userData = await AsyncStorage.getItem('userData');
+        const user = JSON.parse(userData)      
+        let rencana = FIREBASE.database().ref('/notes/'+user.uid);
+        rencana.once('value').then(snapshot => {
+            this.setState({
+                notes1 : snapshot.val(),
+            })
+        })
+    }
+
+    deleteNotes =  async(id) => {
+        const userData = await AsyncStorage.getItem('userData');
+        const user = JSON.parse(userData);
+        const data ={
+            id: id,
+            userId: user.uid
+        }
+
+        await this.props.deleteDataNotes(data)
         if(this.props.cekHapusData){
-            this.getDataNotesFirebase()
-           }    
+            this.getDataRencana();
+           }   
     }
+
+    handleLogout = () => {
+       Alert.alert(
+        "Info",
+        "Yakin Keluar?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: async() => {
+            await AsyncStorage.removeItem('userData');
+            this.props.navigation.navigate('halamanLogin');
+          }}
+        ],
+        { cancelable: false }
+      );
+
+    }
+     
     render() {
         return (
             <View style={styles.container}>
                 {this.props.isLoading ?
-                    <ActivityIndicator />
+                <Loader/>
                     :
                     <View style={styles.blockNotes}>
-                        <View>
+                        <View style={{flexDirection:'row'}}>
                             <Text style={styles.judulCatatan}>Catatan</Text>
+                           <TouchableOpacity style={{flex:1,flexWrap:'wrap-reverse'}} onPress={() => this.handleLogout()}>
+                            <Text>keluar</Text>
+                           </TouchableOpacity>
                         </View>
+                        <TextInput placeholder="Masukan Judul Notes" style={styles.textInput} value={this.state.searchData} onChangeText={(text) => this.setState({
+                            ['searchData'] : text
+                        })}/>
                         {
-                           Object.keys(this.props.quote).map((key) => {
+                            this.state.notes1?
+                        <ScrollView style={{height: height*0.55}}>
+                        {
+                           Object.keys(this.state.notes1).filter((key) =>
+                                this.state.notes1[key].judul.toLowerCase().includes(this.state.searchData.toLowerCase()))
+                            .map(dataKey => {
                                 return(
-                                <View style={styles.cardCatatan} key={key}>
-                                  <View style={styles.cardTextCatatan}>
-                                    <Text style={styles.textCatatanJudul} >{this.props.quote[key].judul}</Text>
-                                    <Text style={styles.texCatatan} >{this.props.quote[key].isi}</Text>
-                                    <Text style={styles.texCatatan} >{this.props.quote[key].tanggal}</Text>
-                                    <TouchableOpacity onPress={() => this.deleteNotes(key)}>
-                                    <View style={{
-                                                marginBottom: 20,
-                                                flexDirection: 'row',
-                                                flex: 1,
-                                                justifyContent: 'flex-end',
-                                                alignItems: 'center'}}>
-                                        
-                                        <Text style={{ color:'white',marginRight: 5}}>hapus</Text>
+                                    <View style={styles.cardCatatan} key={dataKey}>
+                                      <View style={styles.cardTextCatatan}>
+                                        <Text style={styles.textCatatanJudul} >{this.state.notes1[dataKey].judul}</Text>
+                                        <View
+                                            style={{
+                                                borderBottomColor: 'black',
+                                                borderBottomWidth: 1,
+                                                marginVertical: 5
+                                            }}
+                                            />
+                                        <Text style={styles.texCatatan} >{this.state.notes1[dataKey].isi}</Text>
+                                        <Text style={styles.texCatatanTgl} >{this.state.notes1[dataKey].tanggal.substring(0, 21)}</Text>
+                                        <View style={{flexDirection:'row'}}>
+                                        <TouchableOpacity onPress={() => this.deleteNotes(dataKey)}>
+                                        <View style={{
+                                                    marginBottom: 20,
+                                                    flexDirection: 'row',
+                                                    flex: 1,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center'
+                                                    }}>
+                                            
+                                            <Text style={{ color:'white',marginRight: 5}}> <FontAwesomeIcon icon={ faTrash } color={ 'red' }  size={ 20 }/></Text>
+                                        </View>
+                                        </TouchableOpacity>
+                                
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('updateData',{key:dataKey})}>
+                                        <View style={{
+                                                    marginBottom: 20,
+                                                    flexDirection: 'row',
+                                                    flex: 1,
+                                                    justifyContent: 'flex-end',
+                                                    alignItems: 'center'}}>
+                                            
+                                            <Text style={{ color:'white',marginRight: 5, marginBottom: 7}}><FontAwesomeIcon icon={ faEdit } color={ 'green' } size={ 23 }/></Text>
+                                        </View>
+                                        </TouchableOpacity>
+                                        </View>
+                                     </View>
                                     </View>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('updateData',{key:key})}>
-                                    <View style={{
-                                                marginBottom: 20,
-                                                flexDirection: 'row',
-                                                flex: 1,
-                                                justifyContent: 'flex-end',
-                                                alignItems: 'center'}}>
-                                        
-                                        <Text style={{ color:'white',marginRight: 5}}>update</Text>
-                                    </View>
-                                    </TouchableOpacity>
-                                 </View>
-                                </View>
-                                )
+                                    )
                             })
                         }
-                    <View>
-                     <TouchableOpacity onPress={() => this.props.navigation.navigate('tambahData')}>
-                        <Text>TAMBAH</Text>
+                         </ScrollView>: <Text>Data Kosong</Text>
+                        }
+                    <View style={styles.contTombol}>
+                     <TouchableOpacity style={styles.tombol} onPress={() => this.props.navigation.navigate('tambahData')}>
+                        <Text style={styles.textTombol} >TAMBAH</Text>
                      </TouchableOpacity>
                    </View>
                     </View>
@@ -101,13 +178,11 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: height*0.01,
         margin: 10
     },
     blockNotes: {
@@ -120,7 +195,7 @@ const styles = StyleSheet.create({
     },
     cardCatatan: {
         borderRadius: 4,
-        backgroundColor: 'black',
+        backgroundColor: 'white',
         marginBottom: 10,
         shadowColor: "#000",
         shadowOffset: {
@@ -137,10 +212,42 @@ const styles = StyleSheet.create({
     },
     textCatatanJudul: {
         fontSize: 20,
-        color: 'white'
+        color: 'black',
+        textAlign: 'center'
     },
     texCatatan: {
-        color: 'white',
-        marginBottom: 5
-    }
+        color: 'black',
+        marginBottom: 5,
+        fontSize:17
+    },
+    texCatatanTgl: {
+        color: 'black',
+        marginBottom: 5,
+        fontSize:13
+    },
+    tombol: {
+        backgroundColor: '#2596be',
+        borderRadius: 5,
+        padding: 10,
+        marginTop: 10,
+    },
+    textTombol:{
+        color:'white',
+        textAlign:'center'
+    },
+    contTombol: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 0,
+    },
+    textInput: {
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius: 5,
+        padding: 7,
+        marginBottom: 10,
+        marginTop: 10
+
+
+    },
 });

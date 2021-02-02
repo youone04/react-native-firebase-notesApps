@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View , TextInput,TouchableOpacity } from 'react-native'
 import * as quoteActions from '../../config/redux/action'
 import { connect } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 class UpdateDataNotes extends Component {
     constructor(props){
         super(props);
@@ -16,7 +18,13 @@ class UpdateDataNotes extends Component {
         this.getDataFirebase()
     }
     getDataFirebase = async () => {
-       await this.props.getDataUpdate(this.props.route.params.key)
+        const userData = await AsyncStorage.getItem('userData');
+        const user = JSON.parse(userData);
+        const data = {
+            id: this.props.route.params.key,
+            userId: user.uid
+        }
+       await this.props.getDataUpdate(data)
        const {updateQuote} = this.props;
        this.setState({
           judul: updateQuote.judul,
@@ -32,11 +40,14 @@ class UpdateDataNotes extends Component {
     onSubmit = async () => {
         // console.log(this.props.route.params.key)
         const {judul ,isi , tanggal} = this.state;
+        const userData = await AsyncStorage.getItem('userData');
+        const user = JSON.parse(userData);
         const data = {
             judul : judul,
             isi: isi,
             tanggal : tanggal,
-            id: this.props.route.params.key
+            id: this.props.route.params.key,
+            userId: user.uid
         }
        await this.props.aksiUpdateData(data)
         if(!this.props.isLoadUpdate){
@@ -45,18 +56,29 @@ class UpdateDataNotes extends Component {
     }
     render() {
         return (
-            <View>
+            <View style={styles.containerUpdate}>
                 <Text tyle={styles.label}>Judul :  </Text>
                 <TextInput placeholder="Masukan Judul Notes" style={styles.textInput} value={this.state.judul} onChangeText={(text) => this.onChangeText('judul',text)}/>
                 <Text tyle={styles.label}>Isi Notes :  </Text>
-                <TextInput placeholder="Masukan Isi Notes" style={styles.textInput} value={this.state.isi} onChangeText={(text) => this.onChangeText('isi',text)}/>
-                <Text tyle={styles.label}>Tanggal:  </Text>
-                <TextInput placeholder="Masukan Tangal Notes" style={styles.textInput} value={this.state.tanggal} onChangeText={(text) => this.onChangeText('tanggal',text)}/>
-                 <TouchableOpacity style={styles.tombol} onPress={() => this.onSubmit()}>
-                   <View>
-                    <Text  style={styles.textTombol}>SUBMIT</Text>
-                   </View>
-                </TouchableOpacity>
+                <TextInput placeholder="Masukan Isi Notes" 
+                multiline={true}
+                numberOfLines={4}
+                style={styles.textARea} 
+                value={this.state.isi} 
+                onChangeText={(text) => this.onChangeText('isi',text)}/>
+                 {
+                     this.props.loadUpadte ?
+                     <TouchableOpacity style={styles.tombol}>
+                        <View>
+                        <Text  style={styles.textTombol}>LOADING ...</Text>
+                        </View>
+                    </TouchableOpacity>:
+                    <TouchableOpacity style={styles.tombol} onPress={() => this.onSubmit()}>
+                        <View>
+                        <Text  style={styles.textTombol}>UPDATE</Text>
+                        </View>
+                    </TouchableOpacity>
+                 }
             </View>
         )
     }
@@ -65,7 +87,8 @@ class UpdateDataNotes extends Component {
 function mapStateToProps(state) {
     return {
         updateQuote: state.updateQuote,
-        isLoadUpdate: state.isLoadUpdate
+        isLoadUpdate: state.isLoadUpdate,
+        loadUpadte: state.loadUpadte
     }
 }
 
@@ -78,6 +101,9 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps , mapDispatchToProps)(UpdateDataNotes);
 const styles = StyleSheet.create({
+    containerUpdate: {
+        marginHorizontal: 8
+    },
     label: {
         fontSize: 16,
         marginBottom: 5
@@ -110,5 +136,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign:'center',
         fontSize: 16
-    }
+    },
+    textARea:{
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+        height: 150,
+        textAlignVertical:'top'
+    },
 })
