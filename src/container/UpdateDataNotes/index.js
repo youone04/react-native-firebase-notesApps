@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 
     },
     tombol: {
-        backgroundColor: 'black',
+        backgroundColor: '#2596be',
         borderRadius: 5,
         padding: 10,
         marginTop: 10
