@@ -122,16 +122,16 @@ export const aksiUpdateData = (data) => (dispatch) => {
 //registrasi
 export const Registrasi = (data) => (dispatch) => {
     return new Promise((berhasil,gagal) => {
-        dispatch({ type: 'LOAD_QUOTE_START',value: true })
+        dispatch({ type: 'LOAD_LOGIN',value: true })
         firebase.auth().createUserWithEmailAndPassword(data.email , data.password)
         .then(res => {
             berhasil(true)
-            dispatch({ type: 'LOAD_QUOTE_START',value: false })
+             dispatch({ type: 'LOAD_LOGIN',value: true })
         })
         .catch(err => {
             alert(err)
             gagal(err);
-            dispatch({ type: 'LOAD_QUOTE_START',value: false })
+             dispatch({ type: 'LOAD_LOGIN',value: true })
         })
     })
 }
@@ -139,7 +139,7 @@ export const Registrasi = (data) => (dispatch) => {
 //login
 export const Login = (data) => (dispatch) => {
     return new Promise((berhasil, gagal) => {
-        dispatch({ type: 'LOAD_QUOTE_START',value: true })
+        dispatch({ type: 'LOAD_LOGIN',value: true })
         firebase.auth().signInWithEmailAndPassword(data.email, data.password)
             .then(res => {
                 const dataUser = {
@@ -149,12 +149,12 @@ export const Login = (data) => (dispatch) => {
                     refreshToken : res.user.refreshToken
                 }
                 berhasil(dataUser)
-                dispatch({ type: 'LOAD_QUOTE_START',value: false })
+                dispatch({ type: 'LOAD_LOGIN',value: false })
             })
             .catch(function(error) {
                alert(error)
                 gagal(false)
-                dispatch({ type: 'LOAD_QUOTE_START',value: false })
+                dispatch({ type: 'LOAD_LOGIN',value: false })
             })
     })
 

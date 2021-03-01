@@ -35,7 +35,7 @@ export class Registrasi extends Component {
        }
     }
     render() {
-        const {isLoading} = this.props;
+        const {loadlogin} = this.props;
         return (
             <View style={styles.contLogin}>
                 <Logo/>
@@ -47,7 +47,7 @@ export class Registrasi extends Component {
                 })} />
 
                 {
-                    isLoading?
+                    loadlogin?
                     <View >
                         <TouchableOpacity style={styles.contTombolLoginDisabled} disabled={true}>
                         <Text style={styles.textTombol}>LOADING ...</Text>
@@ -74,7 +74,7 @@ export class Registrasi extends Component {
 }
 function mapStateToProps(state) {
     return {
-        isLoading: state.isLoading,
+        loadlogin: state.loadlogin,
     }
 }
 

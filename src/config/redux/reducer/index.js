@@ -7,7 +7,8 @@ let initialState = {
     isLoadSend: null,
     isLoadUpdate: true,
     cekHapusData: false,
-    loadUpadte: null
+    loadUpadte: null,
+    loadlogin: false
 }
 
 export default quotes = (state = initialState, action) => {
@@ -51,6 +52,11 @@ export default quotes = (state = initialState, action) => {
             return{
                 ...state,
                 loadUpadte: action.value
+            }
+        case 'LOAD_LOGIN':
+            return{
+                ...state,
+                loadlogin: action.value
             }
         default:
             return state
