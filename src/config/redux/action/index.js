@@ -159,3 +159,17 @@ export const Login = (data) => (dispatch) => {
     })
 
 }
+
+//ambil data singgle view
+export const getDataSinggleView = (data) => (dispatch) => {
+    return new Promise((berhasil , gagal) => {
+        firebase.database()
+        .ref(`notes/${data.userId}/${data.id}`)
+        .once('value',(querySnapShot) => {
+            let data = querySnapShot.val() ? querySnapShot.val()  : {};
+            let kontakItem = {...data};
+            berhasil(true);
+            dispatch({ type: 'LOAD_SINGGLE_VIEW_SUCCESS', value: kontakItem })
+        })
+    })
+}

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { StyleSheet, Text, View , TextInput,TouchableOpacity } from 'react-native'
-import * as quoteActions from '../../config/redux/action'
-import { connect } from 'react-redux'
+import * as quoteActions from '../../config/redux/action';
+import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class UpdateDataNotes extends Component {

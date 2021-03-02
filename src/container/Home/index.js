@@ -80,6 +80,7 @@ class Home extends Component {
     }
      
     render() {
+        // this.getDataRencana()
         return (
             <View style={styles.container}>
                 {this.props.isLoading ?
@@ -103,10 +104,13 @@ class Home extends Component {
                                 this.state.notes1[key].judul.toLowerCase().includes(this.state.searchData.toLowerCase()))
                             .map(dataKey => {
                                 return(
-                                    <View style={styles.cardCatatan} key={dataKey}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('detailcatatan' , {key:dataKey})} key={dataKey}>
+                                    <View style={styles.cardCatatan} >
+                                        {console.log(dataKey)}
                                       <View style={styles.cardTextCatatan}>
                                         <Text style={styles.textCatatanJudul} >{this.state.notes1[dataKey].judul}</Text>
-                                        <View
+
+                                        {/* <View
                                             style={{
                                                 borderBottomColor: 'black',
                                                 borderBottomWidth: 1,
@@ -140,9 +144,10 @@ class Home extends Component {
                                             <Text style={{ color:'white',marginRight: 5, marginBottom: 7}}><FontAwesomeIcon icon={ faEdit } color={ 'green' } size={ 23 }/></Text>
                                         </View>
                                         </TouchableOpacity>
-                                        </View>
+                                        </View> */}
                                      </View>
                                     </View>
+                                    </TouchableOpacity>
                                     )
                             })
                         }

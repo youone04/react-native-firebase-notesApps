@@ -9,6 +9,7 @@ import UpdateDataNotes from './src/container/UpdateDataNotes';
 import Login from './src/container/Login';
 import Registrasi from './src/container/Registrasi';
 import SplashScreen from './src/components/SplashScreen';
+import SinggleCatatan from './src/container/SinggleCatatan';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -44,6 +45,11 @@ const App = () => {
               <Stack.Screen 
               name="registrasi" 
               component={Registrasi} 
+              options={{headerShown: false}}
+              />
+              <Stack.Screen 
+              name="detailcatatan" 
+              component={SinggleCatatan} 
               options={{headerShown: false}}
               />
         </Stack.Navigator>
