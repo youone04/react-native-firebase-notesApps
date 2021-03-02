@@ -5,7 +5,8 @@ import {
     View ,
     TouchableOpacity,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    ScrollView
     
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -60,7 +61,7 @@ class SinggleCatatan extends Component {
     render(){
         const { judul , isi ,tanggal }= this.state;
         return(
-            <View style={styles.cardCatatan} >
+            <ScrollView style={styles.cardCatatan} >
               <View style={styles.cardTextCatatan}>
                 <Text style={styles.textCatatanJudul} >{judul}</Text>
                 <View
@@ -101,7 +102,7 @@ class SinggleCatatan extends Component {
 
                 </View>
              </View>
-            </View>
+            </ScrollView>
         )
     }
 }
