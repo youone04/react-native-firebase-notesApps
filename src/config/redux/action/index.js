@@ -3,7 +3,8 @@ import {Alert} from 'react-native'
 
 // ambil tanggal
 export const getDataNotes = () => (dispatch) => {
-   return new Promise((berhasil , gagal)=> {
+   try {
+    return new Promise((berhasil , gagal)=> {
         dispatch({ type: 'LOAD_QUOTE_START',value: true })
         let rencana = firebase.database().ref('/notes');
         rencana.once('value').then(snapshot => {
@@ -15,37 +16,48 @@ export const getDataNotes = () => (dispatch) => {
             gagal(false)
         })
     })
+       
+   } catch (error) {
+       alert(error)
+       
+   }
 
 }
 // kirim data
 export const sendDataNotes =(data) => (dispatch) => {
-   return new Promise((berhasil, gagal)=> {
-    if(data.judul && data.isi && data.tanggal){
-        dispatch({type:'LOAD_NOTES_SEND', value: true})
-        const kontakReferensi = firebase.database().ref('notes/'+data.id);
-        const notes = {
-            judul: data.judul,
-            isi: data.isi,
-            tanggal: data.tanggal,
-        }
-        kontakReferensi
-        .push(notes)
-        .then((data) => {
-            alert('Sukses', 'Data Berhasil diinput');
-            // this.props.navigation.replace('halamanutama')
-            berhasil(true);
-            dispatch({type:'LOAD_NOTES_SEND', value: false})
-        })
-        .catch((error) => {
-            console.log(error);
-            dispatch({type:'LOAD_NOTES_SEND', value: false})
-        })
-       }else{
-           alert('form harus terisi!');
-        //    dispatch({type:'LOAD_NOTES_SEND', value: 'jhd'})
-        gagal('gagal')
-       }
-   }) 
+   try {
+    return new Promise((berhasil, gagal)=> {
+        if(data.judul && data.isi && data.tanggal){
+            dispatch({type:'LOAD_NOTES_SEND', value: true})
+            const kontakReferensi = firebase.database().ref('notes/'+data.id);
+            const notes = {
+                judul: data.judul,
+                isi: data.isi,
+                tanggal: data.tanggal,
+            }
+            kontakReferensi
+            .push(notes)
+            .then((data) => {
+                alert('Sukses', 'Data Berhasil diinput');
+                // this.props.navigation.replace('halamanutama')
+                berhasil(true);
+                dispatch({type:'LOAD_NOTES_SEND', value: false})
+            })
+            .catch((error) => {
+                console.log(error);
+                dispatch({type:'LOAD_NOTES_SEND', value: false})
+            })
+           }else{
+               alert('form harus terisi!');
+            //    dispatch({type:'LOAD_NOTES_SEND', value: 'jhd'})
+            gagal('gagal')
+           }
+       }) 
+       
+   } catch (error) {
+       alert(error)
+       
+   }
 }
 
 //delete data
@@ -126,12 +138,12 @@ export const Registrasi = (data) => (dispatch) => {
         firebase.auth().createUserWithEmailAndPassword(data.email , data.password)
         .then(res => {
             berhasil(true)
-             dispatch({ type: 'LOAD_LOGIN',value: true })
+             dispatch({ type: 'LOAD_LOGIN',value: false })
         })
         .catch(err => {
             alert(err)
             gagal(err);
-             dispatch({ type: 'LOAD_LOGIN',value: true })
+             dispatch({ type: 'LOAD_LOGIN',value: false })
         })
     })
 }

@@ -4,16 +4,40 @@ import { connect } from 'react-redux'
 import * as quoteActions from '../../config/redux/action'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../../components/Logo';
-export class Login extends Component {
+import NetInfo from "@react-native-community/netinfo";
+  
+  
+  export class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
           email: '',
-          password: ''
+          password: '',
+          appKonek:''
         }
     }
     componentDidMount(){
-       this.getLocalStrorage()
+       this.getLocalStrorage();
+
+       NetInfo.fetch().then(state => {
+        console.log(
+           'Connection type1: ' + 
+            state.type + 
+           ', Is connected1?: ' + 
+            state.isConnected);
+      });
+      
+      //Subscribe to network state updates
+      const unsubscribe = NetInfo.addEventListener(state => {
+        console.log(
+           'Connection type update: ' + 
+            state.type + 
+           ', Is connected update?: ' + 
+            state.isConnected);
+      });
+  
+      //To Unsubscribe the network state update
+    //   unsubscribe();
 
     }
     getLocalStrorage = async() => {
@@ -47,16 +71,19 @@ export class Login extends Component {
                 email : '',
                 password : ''
             })
-            this.props.navigation.navigate('halamanutama')
+            this.props.navigation.replace('halamanutama')
             }else{
                 alert('Gagal Login')
             }           
        }else{
-           alert('Data Harus Terisi')
+           alert('Data Harus Terisi');
        }
     }
+   
     render() {
         const {loadlogin} = this.props;
+
+        // console.log('cek jaringan => ', netInfo);
         return (
             <View style={styles.contLogin}>
                <Logo/>
@@ -126,7 +153,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     contTombolLoginDisabled:{
-        backgroundColor: '#3C3A3A',
+        backgroundColor: '#2596be',
         borderRadius: 5,
         padding: 10,
         marginTop: 10

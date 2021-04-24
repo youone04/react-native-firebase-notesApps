@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     contTombolLoginDisabled:{
-        backgroundColor: '#3C3A3A',
+        backgroundColor: '#2596be',
         borderRadius: 5,
         padding: 10,
         marginTop: 10

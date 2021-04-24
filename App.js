@@ -10,6 +10,9 @@ import Login from './src/container/Login';
 import Registrasi from './src/container/Registrasi';
 import SplashScreen from './src/components/SplashScreen';
 import SinggleCatatan from './src/container/SinggleCatatan';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Setting a timer']);
+
 const Stack = createStackNavigator();
 
 const App = () => {

@@ -3,7 +3,8 @@ import { StyleSheet, Text, View , TextInput,TouchableOpacity, BackHandler } from
 import * as quoteActions from '../../config/redux/action'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-;
+import Snackbar from 'react-native-snackbar';
+
 class TambahData extends Component {
     constructor(props){
         super(props);
@@ -30,10 +31,20 @@ class TambahData extends Component {
             tanggal : tanggal,
             id: user.uid
         }
-       await this.props.sendDataNotes(data)
-        if(!this.props.isLoadSend){
-            this.props.navigation.replace('halamanutama')
+        if(judul && isi){
+            await this.props.sendDataNotes(data)
+            if(!this.props.isLoadSend){
+                this.props.navigation.replace('halamanutama')
+            }
+            return;
         }
+       Snackbar.show({
+            text: 'Form Harus Terisi Semua!',
+            duration: Snackbar.LENGTH_SHORT,
+            backgroundColor:'red',
+            
+          })
+    
     }
     render() {
         return (

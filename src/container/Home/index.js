@@ -80,7 +80,6 @@ class Home extends Component {
     }
      
     render() {
-        // this.getDataRencana()
         return (
             <View style={styles.container}>
                 {this.props.isLoading ?
@@ -97,7 +96,7 @@ class Home extends Component {
                             ['searchData'] : text
                         })}/>
                         {
-                            this.state.notes1?
+                        this.state.notes1?
                         <ScrollView style={{height: height*0.55}}>
                         {
                            Object.keys(this.state.notes1).filter((key) =>
@@ -109,42 +108,6 @@ class Home extends Component {
                                         {console.log(dataKey)}
                                       <View style={styles.cardTextCatatan}>
                                         <Text style={styles.textCatatanJudul} >{this.state.notes1[dataKey].judul}</Text>
-
-                                        {/* <View
-                                            style={{
-                                                borderBottomColor: 'black',
-                                                borderBottomWidth: 1,
-                                                marginVertical: 5
-                                            }}
-                                            />
-                                        <Text style={styles.texCatatan} >{this.state.notes1[dataKey].isi}</Text>
-                                        <Text style={styles.texCatatanTgl} >{this.state.notes1[dataKey].tanggal.substring(0, 21)}</Text>
-                                        <View style={{flexDirection:'row'}}>
-                                        <TouchableOpacity onPress={() => this.deleteNotes(dataKey)}>
-                                        <View style={{
-                                                    marginBottom: 20,
-                                                    flexDirection: 'row',
-                                                    flex: 1,
-                                                    justifyContent: 'flex-end',
-                                                    alignItems: 'center'
-                                                    }}>
-                                            
-                                            <Text style={{ color:'white',marginRight: 5}}> <FontAwesomeIcon icon={ faTrash } color={ 'red' }  size={ 20 }/></Text>
-                                        </View>
-                                        </TouchableOpacity>
-                                
-                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('updateData',{key:dataKey})}>
-                                        <View style={{
-                                                    marginBottom: 20,
-                                                    flexDirection: 'row',
-                                                    flex: 1,
-                                                    justifyContent: 'flex-end',
-                                                    alignItems: 'center'}}>
-                                            
-                                            <Text style={{ color:'white',marginRight: 5, marginBottom: 7}}><FontAwesomeIcon icon={ faEdit } color={ 'green' } size={ 23 }/></Text>
-                                        </View>
-                                        </TouchableOpacity>
-                                        </View> */}
                                      </View>
                                     </View>
                                     </TouchableOpacity>
@@ -196,7 +159,8 @@ const styles = StyleSheet.create({
     judulCatatan: {
         marginLeft: 5,
         fontSize: 25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 5
     },
     cardCatatan: {
         borderRadius: 4,
@@ -210,6 +174,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.36,
         shadowRadius: 6.68,
         elevation: 11,
+        height: 60
     },
     cardTextCatatan: {
         marginLeft: 5,
@@ -218,7 +183,8 @@ const styles = StyleSheet.create({
     textCatatanJudul: {
         fontSize: 20,
         color: 'black',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop:18
     },
     texCatatan: {
         color: 'black',

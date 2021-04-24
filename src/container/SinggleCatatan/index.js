@@ -71,10 +71,7 @@ class SinggleCatatan extends Component {
                         marginVertical: 5
                     }}
                     />
-                <Text style={styles.texCatatan} >{isi}</Text>
-                <Text style={styles.texCatatanTgl} >{tanggal.substring(0, 21)}</Text>
-
-                <View style={{flexDirection:'row',marginTop:20}}>
+                <View style={{flexDirection:'row-reverse',marginTop:20}}>
                 <TouchableOpacity onPress={() => this.deleteNotes(this.props.route.params.key)}>
                 <View style={{
                             marginBottom: 20,
@@ -84,7 +81,8 @@ class SinggleCatatan extends Component {
                             alignItems: 'center'
                             }}>
                     
-                    <Text style={{ color:'white',marginRight: 5}}> <FontAwesomeIcon icon={ faTrash } color={ 'red' }  size={ 20 }/></Text>
+                <Text style={{ color:'white',marginRight: 5}}> <FontAwesomeIcon icon={ faTrash } color={ 'red' }  size={ 20 }/></Text>
+                
                 </View>
                 </TouchableOpacity>
         
@@ -96,11 +94,13 @@ class SinggleCatatan extends Component {
                             justifyContent: 'flex-end',
                             alignItems: 'center'}}>
                     
-                    <Text style={{ color:'white',marginRight: 5, marginBottom: 7}}><FontAwesomeIcon icon={ faEdit } color={ 'green' } size={ 23 }/></Text>
+                    <Text style={{ color:'white',marginRight: 5, marginBottom: 0}}><FontAwesomeIcon icon={ faEdit } color={ 'green' } size={ 23 }/></Text>
                 </View>
                 </TouchableOpacity>
-
                 </View>
+
+                <Text style={styles.texCatatan} >{isi}</Text>
+                <Text style={styles.texCatatanTgl} >{tanggal.substring(0, 21)}</Text>                
              </View>
             </ScrollView>
         )
@@ -163,12 +163,14 @@ const styles = StyleSheet.create({
     texCatatan: {
         color: 'black',
         marginBottom: 5,
-        fontSize:17
+        fontSize:17,
+        paddingHorizontal: 10
     },
     texCatatanTgl: {
         color: 'black',
         marginBottom: 5,
-        fontSize:13
+        fontSize:13,
+        paddingHorizontal: 10
     },
     tombol: {
         backgroundColor: '#2596be',
