@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../../components/Logo';
 import NetInfo from "@react-native-community/netinfo";
 import Snackbar from 'react-native-snackbar';
-import CekInternet from '../../components/CekInternet';
   
   
   export class Login extends Component {
@@ -20,9 +19,7 @@ import CekInternet from '../../components/CekInternet';
     }
     componentDidMount(){
        this.getLocalStrorage();      
-      //Subscribe to network state updates
-    <CekInternet/>
-  
+      //Subscribe to network state updates  
     }
     getLocalStrorage = async() => {
         try {

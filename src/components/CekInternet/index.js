@@ -6,6 +6,7 @@ class CekInternet extends Component{
     componentDidMount(){
         // console.log(this.props.route.params.key)
         NetInfo.addEventListener(state => {
+            console.log(state.isConnected)
             if(!state.isConnected){
               Snackbar.show({
                   text: 'Tidak Ada Koneksi Internet!',

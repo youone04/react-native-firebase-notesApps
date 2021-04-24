@@ -3,8 +3,6 @@ import { StyleSheet, Text, View , TextInput,TouchableOpacity } from 'react-nativ
 import * as quoteActions from '../../config/redux/action';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Snackbar from 'react-native-snackbar';
-import CekInternet from '../../components/CekInternet';
 
 
 class UpdateDataNotes extends Component {
@@ -19,7 +17,6 @@ class UpdateDataNotes extends Component {
     componentDidMount(){
         // console.log(this.props.route.params.key)
         this.getDataFirebase();
-        <CekInternet/>
     }
     getDataFirebase = async () => {
         const userData = await AsyncStorage.getItem('userData');
@@ -60,12 +57,7 @@ class UpdateDataNotes extends Component {
             }
             return;
         }
-        Snackbar.show({
-            text: 'Form Harus Terisi Semua!',
-            duration: Snackbar.LENGTH_SHORT,
-            backgroundColor:'red',
-            
-          })
+        alert('Data Harus Terisi');
     }
     render() {
         return (

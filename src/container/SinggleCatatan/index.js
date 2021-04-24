@@ -15,9 +15,6 @@ import * as quoteActions from '../../config/redux/action';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width ,  height} = Dimensions.get('screen');
-import NetInfo from "@react-native-community/netinfo";
-import Snackbar from 'react-native-snackbar';
-import CekInternet from '../../components/CekInternet';
 
 class SinggleCatatan extends Component {
     constructor(props){
@@ -31,7 +28,6 @@ class SinggleCatatan extends Component {
     componentDidMount(){
         // console.log(this.props.route.params.key)
         this.getDataFirebase();
-        <CekInternet/>
     }
     getDataFirebase = async () => {
         const userData = await AsyncStorage.getItem('userData');

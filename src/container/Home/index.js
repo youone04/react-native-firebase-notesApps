@@ -18,7 +18,6 @@ import FIREBASE from '../../config/FIREBASE';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import Snackbar from 'react-native-snackbar';
-import CekInternet from "../../components/CekInternet";
 
 const {width ,  height} = Dimensions.get('screen');
 class Home extends Component {
@@ -26,7 +25,8 @@ class Home extends Component {
         super();
         this.state = {
             notes1: [],
-            searchData: ''
+            searchData: '',
+            cektInternet: ''
         }
     }
     // urutan proses
@@ -34,9 +34,7 @@ class Home extends Component {
     // render 2
     // componentDidMount 3
      componentDidMount(){
-        this.getDataRencana();
-       <CekInternet/>
-
+        this.getDataRencana()
     }
    
     getDataRencana = async () => {

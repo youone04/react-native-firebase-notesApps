@@ -3,7 +3,6 @@ import { Text, View , TextInput , StyleSheet , TouchableOpacity} from 'react-nat
 import { connect } from 'react-redux'
 import * as quoteActions from '../../config/redux/action'
 import Logo from '../../components/Logo'
-import CekInternet from '../../components/CekInternet'
 
 export class Registrasi extends Component {
     constructor(props){
@@ -13,10 +12,7 @@ export class Registrasi extends Component {
           password: ''
         }
     }
-    componentDidMount(){
-        <CekInternet/>
-    }
-    
+
     onSubmit = async() => {
         const {email , password} = this.state;
         const data = {

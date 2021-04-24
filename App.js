@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import { Provider} from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import store from './src/config/redux/store';
@@ -12,10 +12,32 @@ import SplashScreen from './src/components/SplashScreen';
 import SinggleCatatan from './src/container/SinggleCatatan';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Setting a timer']);
+import NetInfo from "@react-native-community/netinfo";
+import Snackbar from 'react-native-snackbar';
 
 const Stack = createStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    NetInfo.addEventListener(state => {
+      if(!state.isConnected){
+        Snackbar.show({
+            text: 'Tidak Ada Koneksi Internet!',
+            duration: Snackbar.LENGTH_INDEFINITE,
+            backgroundColor:'red',
+            
+          })
+      }else{
+        Snackbar.show({
+            text: 'Internet Terhubung!',
+            duration: Snackbar.LENGTH_SHORT,
+            backgroundColor:'green',
+            
+          })
+      }
+  });
+  },[])
+
   return (
     <Provider store={store}>
        <NavigationContainer>

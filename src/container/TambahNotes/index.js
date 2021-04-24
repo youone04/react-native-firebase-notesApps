@@ -3,8 +3,6 @@ import { StyleSheet, Text, View , TextInput,TouchableOpacity, BackHandler } from
 import * as quoteActions from '../../config/redux/action'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Snackbar from 'react-native-snackbar';
-import CekInternet from '../../components/CekInternet';
 
 class TambahData extends Component {
     constructor(props){
@@ -15,10 +13,7 @@ class TambahData extends Component {
             tanggal: new Date().toString()
         }
     }
- 
-    componentDidMount(){
-        <CekInternet/>
-    }
+
    
     onChangeText = (judul,value) => {
        this.setState({
@@ -42,12 +37,7 @@ class TambahData extends Component {
             }
             return;
         }
-       Snackbar.show({
-            text: 'Form Harus Terisi Semua!',
-            duration: Snackbar.LENGTH_SHORT,
-            backgroundColor:'red',
-            
-          })
+        alert('Data Harus Terisi');
     
     }
     render() {
