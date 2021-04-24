@@ -16,6 +16,10 @@ import { connect } from 'react-redux'
 import Loader from "../../components/Loader";
 import FIREBASE from '../../config/FIREBASE';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from "@react-native-community/netinfo";
+import Snackbar from 'react-native-snackbar';
+import CekInternet from "../../components/CekInternet";
+
 const {width ,  height} = Dimensions.get('screen');
 class Home extends Component {
     constructor(){
@@ -30,7 +34,8 @@ class Home extends Component {
     // render 2
     // componentDidMount 3
      componentDidMount(){
-        this.getDataRencana()
+        this.getDataRencana();
+       <CekInternet/>
 
     }
    

@@ -5,6 +5,8 @@ import * as quoteActions from '../../config/redux/action'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../../components/Logo';
 import NetInfo from "@react-native-community/netinfo";
+import Snackbar from 'react-native-snackbar';
+import CekInternet from '../../components/CekInternet';
   
   
   export class Login extends Component {
@@ -17,28 +19,10 @@ import NetInfo from "@react-native-community/netinfo";
         }
     }
     componentDidMount(){
-       this.getLocalStrorage();
-
-       NetInfo.fetch().then(state => {
-        console.log(
-           'Connection type1: ' + 
-            state.type + 
-           ', Is connected1?: ' + 
-            state.isConnected);
-      });
-      
+       this.getLocalStrorage();      
       //Subscribe to network state updates
-      const unsubscribe = NetInfo.addEventListener(state => {
-        console.log(
-           'Connection type update: ' + 
-            state.type + 
-           ', Is connected update?: ' + 
-            state.isConnected);
-      });
+    <CekInternet/>
   
-      //To Unsubscribe the network state update
-    //   unsubscribe();
-
     }
     getLocalStrorage = async() => {
         try {
@@ -82,6 +66,7 @@ import NetInfo from "@react-native-community/netinfo";
    
     render() {
         const {loadlogin} = this.props;
+        // console.log('apakah terhubung internet =>', this.state.appKonek)
 
         // console.log('cek jaringan => ', netInfo);
         return (

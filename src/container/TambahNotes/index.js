@@ -4,6 +4,7 @@ import * as quoteActions from '../../config/redux/action'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
+import CekInternet from '../../components/CekInternet';
 
 class TambahData extends Component {
     constructor(props){
@@ -15,6 +16,9 @@ class TambahData extends Component {
         }
     }
  
+    componentDidMount(){
+        <CekInternet/>
+    }
    
     onChangeText = (judul,value) => {
        this.setState({
