@@ -7,17 +7,17 @@ import {
     ScrollView,
     Dimensions,
     Alert,
-    TextInput
+    TextInput,
+    ToastAndroid
 } from "react-native";
 import * as quoteActions from '../../config/redux/action'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import {faTrash , faEdit} from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import Loader from "../../components/Loader";
 import FIREBASE from '../../config/FIREBASE';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NetInfo from "@react-native-community/netinfo";
-import Snackbar from 'react-native-snackbar';
+import firebase from '../../config/FIREBASE';
+import CheckBox from 'react-native-check-box';
+
 
 const {width ,  height} = Dimensions.get('screen');
 class Home extends Component {
@@ -26,7 +26,8 @@ class Home extends Component {
         this.state = {
             notes1: [],
             searchData: '',
-            cektInternet: ''
+            cektInternet: '',
+            selectTed: [],
         }
     }
     // urutan proses
@@ -34,9 +35,16 @@ class Home extends Component {
     // render 2
     // componentDidMount 3
      componentDidMount(){
-        this.getDataRencana()
+        this.getDataRencana();
+        const{selectTed} = this.state;
+        Object.keys(this.state.notes1).map(keyMap => {
+                this.setState({
+                    selectTed: [...selectTed , false]
+                })
+        })
     }
-   
+
+ 
     getDataRencana = async () => {
         const userData = await AsyncStorage.getItem('userData');
         const user = JSON.parse(userData)      
@@ -81,8 +89,61 @@ class Home extends Component {
       );
 
     }
-     
+    handleCheck = (key ,cekAksi) => {
+        const{selectTed} = this.state;
+        const newAKsi = selectTed;
+        if(cekAksi){
+            newAKsi[key] = false;
+        }else{
+            newAKsi[key] = true;
+        }
+        this.setState({
+            selectTed: newAKsi
+        })
+      
+        
+    }
+
+    deleteRencanaFirebase = async (id) => {
+        const userData = await AsyncStorage.getItem('userData');
+        const user = JSON.parse(userData);
+        return new Promise((berhasil , gagal) => {
+            firebase
+            .database()
+            .ref(`/notes/${user.uid}/${id}`)
+            .remove()
+            .then(() => {
+                berhasil(true)
+            })
+        })
+    }
+
+  handleDelete = async () => {
+    const{ notes1, selectTed } = this.state;
+    var i=0;
+    Object.keys(notes1).map(key => {
+        // console.log('selectted =>',selectTed[key])
+        if(selectTed[key]){
+            // console.log(key);
+            this.deleteRencanaFirebase(key);
+            i++;
+        }
+    })
+    await this.getDataRencana();
+    // alert(i +' Data Terhapus!');
+    ToastAndroid.showWithGravity(
+        i+ ' Data Terhapus!',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+        
+      
+    }
+
+
     render() {
+        const{ selectTed } = this.state;
+        // console.log(selectTed)
         return (
             <View style={styles.container}>
                 {this.props.isLoading ?
@@ -91,8 +152,11 @@ class Home extends Component {
                     <View style={styles.blockNotes}>
                         <View style={{flexDirection:'row'}}>
                             <Text style={styles.judulCatatan}>Catatan</Text>
-                           <TouchableOpacity style={{flex:1,flexWrap:'wrap-reverse'}} onPress={() => this.handleLogout()}>
-                            <Text>keluar</Text>
+                           <TouchableOpacity style={{flex:1,flexWrap:'wrap-reverse'}} >
+                            <View style={{flexDirection:'row'}}>
+                            <Text onPress={() => this.handleLogout()} style={{margin: 5}}>keluar</Text>
+                            <Text onPress={() => this.handleDelete() } style={{margin: 5}}>Delete</Text>
+                            </View>
                            </TouchableOpacity>
                         </View>
                         <TextInput placeholder="Masukan Judul Notes" style={styles.textInput} value={this.state.searchData} onChangeText={(text) => this.setState({
@@ -106,14 +170,19 @@ class Home extends Component {
                                 this.state.notes1[key].judul.toLowerCase().includes(this.state.searchData.toLowerCase()))
                             .map(dataKey => {
                                 return(
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('detailcatatan' , {key:dataKey})} key={dataKey}>
+                                    <TouchableOpacity style={{flex: 1}} onPress={() => this.props.navigation.navigate('detailcatatan' , {key:dataKey})} key={dataKey}>
                                     <View style={styles.cardCatatan} >
-                                        {console.log(dataKey)}
                                       <View style={styles.cardTextCatatan}>
                                         <Text style={styles.textCatatanJudul} >{this.state.notes1[dataKey].judul}</Text>
                                      </View>
                                     </View>
+                                    <CheckBox
+                                     style={{marginBottom: 10}}
+                                     isChecked={selectTed[dataKey]}
+                                     onClick={() => this.handleCheck(dataKey , selectTed[dataKey])}
+                                    />
                                     </TouchableOpacity>
+                                    
                                     )
                             })
                         }
@@ -177,7 +246,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.36,
         shadowRadius: 6.68,
         elevation: 11,
-        height: 60
+        height: 60,
     },
     cardTextCatatan: {
         marginLeft: 5,

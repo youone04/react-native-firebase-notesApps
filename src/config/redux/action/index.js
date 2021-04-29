@@ -1,5 +1,8 @@
 import firebase from '../../FIREBASE'
-import {Alert} from 'react-native'
+import {
+    Alert,
+    ToastAndroid
+} from 'react-native'
 
 // ambil tanggal
 export const getDataNotes = () => (dispatch) => {
@@ -38,8 +41,13 @@ export const sendDataNotes =(data) => (dispatch) => {
             kontakReferensi
             .push(notes)
             .then((data) => {
-                alert('Sukses', 'Data Berhasil diinput');
+                // alert('Sukses', 'Data Berhasil diinput');
                 // this.props.navigation.replace('halamanutama')
+                ToastAndroid.showWithGravity(
+                    "Data Berhasil di Input",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                  );
                 berhasil(true);
                 dispatch({type:'LOAD_NOTES_SEND', value: false})
             })
@@ -79,7 +87,11 @@ export const deleteDataNotes = (data) => (dispatch) => {
                   .then(() => {
                     berhasil(true)
                     dispatch({type: 'CEK_HAPUS_DATA' , value: true})
-                    Alert.alert('hapus','Hapus Sukses');
+                    ToastAndroid.showWithGravity(
+                        "Data Berhasil di Hapus",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                      );
                   })
                 
               }}

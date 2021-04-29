@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Dimensions,
-    ScrollView
+    ScrollView,
+    ToastAndroid
     
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'

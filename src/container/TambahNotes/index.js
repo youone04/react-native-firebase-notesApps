@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View , TextInput,TouchableOpacity, BackHandler } from 'react-native'
+import { 
+    StyleSheet, 
+    Text, 
+    View , 
+    TextInput,
+    TouchableOpacity,
+    ToastAndroid
+ } from 'react-native'
 import * as quoteActions from '../../config/redux/action'
 import { connect } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';

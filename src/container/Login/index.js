@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import * as quoteActions from '../../config/redux/action'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Logo from '../../components/Logo';
-import NetInfo from "@react-native-community/netinfo";
-import Snackbar from 'react-native-snackbar';
   
   
   export class Login extends Component {
@@ -17,7 +15,7 @@ import Snackbar from 'react-native-snackbar';
           appKonek:''
         }
     }
-    componentDidMount(){
+    componentWillMount(){
        this.getLocalStrorage();      
       //Subscribe to network state updates  
     }
@@ -25,7 +23,7 @@ import Snackbar from 'react-native-snackbar';
         try {
             const value = await AsyncStorage.getItem('userData')
             if(value !== null) {
-                this.props.navigation.navigate('halamanutama');
+                this.props.navigation.replace('halamanutama');
             }
           } catch(e) {
             // error reading value
