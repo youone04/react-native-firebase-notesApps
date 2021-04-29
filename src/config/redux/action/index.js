@@ -129,7 +129,11 @@ export const aksiUpdateData = (data) => (dispatch) => {
             .update(notes)
             .then((data) => {
                 berhasil(true)
-                Alert.alert('Sukses', 'Data di Update');
+                ToastAndroid.showWithGravity(
+                    "Data Berhasil di Update",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                  );
                 dispatch({type:'LOAD_NOTES_UPDATE', value: false})
                 dispatch({type:'LOAD_NOTES_SEND_UPDATE', value: false})
             })
